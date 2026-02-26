@@ -58,6 +58,7 @@ namespace Matcher.Scenes.Main
             base.Dispose();
             if (_lobbyView != null)
             {
+                _lobbyView.Dispose();
                 _lobbyView.OnPlayEasyClicked -= StartEasyGame;
                 _lobbyView.OnPlayHardClicked -= StartHardGame;
                 _lobbyView.OnLeaderboardClicked -= OpenLeaderboard;

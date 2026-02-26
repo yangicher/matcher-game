@@ -5,7 +5,7 @@ using System;
 
 namespace Matcher.Scenes.Main.Lobby
 {
-    public class LobbyView : MonoBehaviour
+    public class LobbyView : MonoBehaviour, IDisposable
     {
         [SerializeField] private TMP_InputField _nameInputField;
         [SerializeField] private Button _easyButton;
@@ -29,6 +29,13 @@ namespace Matcher.Scenes.Main.Lobby
             _hardButton.interactable = state;
             _leaderboardButton.interactable = state;
             _nameInputField.interactable = state;
+        }
+
+        public void Dispose()
+        {
+            _easyButton.onClick.RemoveAllListeners();
+            _hardButton.onClick.RemoveAllListeners();
+            _leaderboardButton.onClick.RemoveAllListeners();
         }
     }
 }
