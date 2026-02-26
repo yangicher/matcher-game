@@ -12,7 +12,7 @@ namespace Matcher.Core.Scenes
             ProjectContext.TransitionController.RegisterScene(this);
         }
 
-        public abstract Task LoadAsync();
+        public abstract Task LoadAsync(object payload = null);
 
         public virtual void Dispose()
         {

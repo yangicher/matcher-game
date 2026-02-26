@@ -11,7 +11,7 @@ namespace Matcher.Scenes.Splash
             await Task.Delay(3000);
             await LoadAsync();
         }
-        public override async Task LoadAsync()
+        public override async Task LoadAsync(object payload = null)
         {
             await ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Loading);
         }

@@ -21,7 +21,7 @@ namespace Matcher.Core.Scenes.Transition
             _sceneReady?.TrySetResult(scene);
         }
 
-        public async Task LoadSceneAsync(string sceneName)
+        public async Task LoadSceneAsync(string sceneName, object payload = null)
         {
             TransitionView activeView = Object.Instantiate(_viewPrefab);
             Object.DontDestroyOnLoad(activeView.gameObject);
@@ -39,7 +39,7 @@ namespace Matcher.Core.Scenes.Transition
 
             BaseScene newScene = await _sceneReady.Task;
         
-            await newScene.LoadAsync();
+            await newScene.LoadAsync(payload);
 
             await activeView.FadeOutAsync();
             

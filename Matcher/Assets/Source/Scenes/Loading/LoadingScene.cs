@@ -6,7 +6,7 @@ namespace Matcher.Scenes.Loading
 {
     public class LoadingScene : BaseScene
     {
-        public override async Task LoadAsync()
+        public override async Task LoadAsync(object payload = null)
         {
             await Task.Delay(2000);
             await ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Main);
