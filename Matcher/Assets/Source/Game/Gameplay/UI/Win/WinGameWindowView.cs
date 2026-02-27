@@ -9,21 +9,32 @@ namespace Matcher.Game.Gameplay.UI.Win
 {
     public class WinGameWindowView : BaseWindow<WinGameWindowModel>
     {
+        [SerializeField] private TMP_Text _scoreText;
         [SerializeField] private TMP_Text _movesText;
         [SerializeField] private TMP_Text _timeText;
         [SerializeField] private Button _closeButton;
+        [SerializeField] private Button _replayButton;
         [SerializeField] private Button _restartButton;
 
+        public event Action OnReplayClicked;
+        public event Action OnRestartClicked;
         public event Action OnCloseClicked;
 
         private void Awake()
         {
+            _replayButton.onClick.AddListener(() => OnReplayClicked?.Invoke());
+            _restartButton.onClick.AddListener(() => OnRestartClicked?.Invoke());
             _closeButton.onClick.AddListener(() => OnCloseClicked?.Invoke());
         }
 
-        public void SetMoves(int score)
+        public void SetScore(int score)
         {
-            _movesText.text = $"Moves: {score}";
+            _scoreText.text = $"Score: {score}";
+        }
+        
+        public void SetMoves(int moves)
+        {
+            _movesText.text = $"Moves: {moves}";
         }
         
         public void SetTime(int time)

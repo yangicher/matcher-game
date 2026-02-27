@@ -10,17 +10,41 @@ namespace Matcher.Game.Gameplay.UI.Win
         
         protected override void SetupView()
         {
+            WindowView.SetScore(Model.Score);
             WindowView.SetMoves(Model.Moves);
+            WindowView.SetTime(Model.CompletionTime);
         }
 
         protected override void SubscribeToEvents()
         {
-            WindowView.OnCloseClicked += Close;
+            WindowView.OnReplayClicked += OnReplayClicked;
+            WindowView.OnRestartClicked += OnRestartClicked;
+            WindowView.OnCloseClicked += OnCloseClicked;
         }
 
         protected override void UnsubscribeFromEvents()
         {
-            WindowView.OnCloseClicked -= Close;
+            WindowView.OnReplayClicked -= OnReplayClicked;
+            WindowView.OnRestartClicked -= OnRestartClicked;
+            WindowView.OnCloseClicked -= OnCloseClicked;
+        }
+
+        private void OnReplayClicked()
+        {
+            Close();
+            Model.OnRestartRequest?.Invoke(true);
+        }
+        
+        private void OnRestartClicked()
+        {
+            Close();
+            Model.OnRestartRequest?.Invoke(false);
+        }
+        
+        private void OnCloseClicked()
+        {
+            Close();
+            Model.OnQuitGameRequest?.Invoke();
         }
     }
 }

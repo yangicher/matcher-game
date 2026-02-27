@@ -15,12 +15,34 @@ namespace Matcher.Game.Gameplay.UI.GameOver
 
         protected override void SubscribeToEvents()
         {
-            WindowView.OnHomeClicked += Close;
+            WindowView.OnHomeClicked += OnHomeClicked;
+            WindowView.OnReplayClicked += OnReplayClicked;
+            WindowView.OnRestartClicked += OnRestartClicked;
         }
 
         protected override void UnsubscribeFromEvents()
         {
-            WindowView.OnHomeClicked -= Close;
+            WindowView.OnHomeClicked -= OnHomeClicked;
+            WindowView.OnReplayClicked -= OnReplayClicked;
+            WindowView.OnRestartClicked -= OnRestartClicked;
+        }
+
+        private void OnReplayClicked()
+        {
+            Close();
+            Model.OnRestartRequest?.Invoke(true);
+        }
+
+        private void OnHomeClicked()
+        {
+            Close();
+            Model.OnQuitGameRequest?.Invoke();
+        }
+        
+        private void OnRestartClicked()
+        {
+            Close();
+            Model.OnRestartRequest?.Invoke(false);
         }
     }
 }

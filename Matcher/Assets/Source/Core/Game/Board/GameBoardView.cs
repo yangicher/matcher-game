@@ -8,6 +8,8 @@ namespace Matcher.Core.Game.Board
         [SerializeField] private GridLayoutGroup _gridLayout;
         [SerializeField] private RectTransform _boardRect;
 
+        public RectTransform BoardRect => _boardRect;
+
         public void AdjustGridLayout(int totalElements, int columns)
         {
             _gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;

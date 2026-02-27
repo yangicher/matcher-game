@@ -23,7 +23,7 @@ namespace Matcher.Core.Game.Element
             _button.onClick.AddListener(HandleClick);
         }
 
-        public virtual void Initialize(int id, string symbol, Action<BaseGameElement> onClickCallback)
+        public virtual void Initialize(int id, string symbol, Action<IGameElement> onClickCallback)
         {
             Id = id;
             _onElementClicked = onClickCallback;

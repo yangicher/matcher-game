@@ -11,6 +11,7 @@ namespace Matcher.Core.Game.Board
     {
         private readonly Transform _boardContainer;
         private readonly GameBoardFactory _factory;
+        private readonly List<IGameElement> _activeElements = new List<IGameElement>();
         
         private readonly string[] _availableSymbols = { 
             "A", "B", "C", "D", "E", "F", "G", "H", 
@@ -34,11 +35,30 @@ namespace Matcher.Core.Game.Board
 
             Shuffle(ids);
 
-            foreach (int id in ids)
+            int totalElements = pairsCount * 2;
+            for (int i = 0; i < totalElements; i++)
             {
-                var element = _factory.CreateGameElement(_boardContainer);
+                int id = ids[i];
                 string symbol = _availableSymbols[id % _availableSymbols.Length];
-                element.Initialize(id, symbol, onElementClicked);
+
+                if (i < _activeElements.Count)
+                {
+                    _activeElements[i].Initialize(id, symbol, onElementClicked);
+                }
+                else
+                {
+                    var element = _factory.CreateGameElement(_boardContainer);
+                    element.Initialize(id, symbol, onElementClicked);
+                    _activeElements.Add(element);
+                }
+            }
+        }
+        
+        public void ResetBoard()
+        {
+            foreach (var element in _activeElements)
+            {
+                element.SetState(GameElementState.Hidden);
             }
         }
 

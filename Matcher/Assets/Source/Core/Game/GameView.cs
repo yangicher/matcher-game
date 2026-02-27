@@ -9,6 +9,8 @@ namespace Matcher.Core.Game
     {
         [SerializeField] private TMP_Text _timeText;
         [SerializeField] private TMP_Text _movesText;
+        [SerializeField] private TMP_Text _scoreText;
+        [SerializeField] private TMP_Text _userNameText;
         
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _homeButton;
@@ -36,6 +38,16 @@ namespace Matcher.Core.Game
         public void UpdateMoves(int moves)
         {
             _movesText.text = $"Moves: {moves}";
+        }
+        
+        public void UpdateScore(int score)
+        {
+            _scoreText.text = $"Score: {score}";
+        }
+        
+        public void SetUserName(string userName)
+        {
+            _movesText.text = userName;
         }
     }
 }

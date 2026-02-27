@@ -1,8 +1,6 @@
 using System.Threading.Tasks;
 using Matcher.Core.Game;
 using Matcher.Core.Game.Board;
-using Matcher.Core.Game.Factory;
-using Matcher.Core.Game.UI;
 using Matcher.Core.Installer;
 using Matcher.Core.Project;
 using Matcher.Core.Scenes;
@@ -13,12 +11,9 @@ namespace Matcher.Scenes.Game
 {
     public class GameScene : BaseScene
     {
-        [SerializeField] private Transform _elementsContainer;
         [SerializeField] private GameBoardView _gameBoardView;
         [SerializeField] private GameView _gameView;
         
-        [SerializeField] private Transform _localWindowsCanvas;
-
         private GameSession _session;
         private GamePayload _currentPayload;
         private IInstaller _uiInstaller;
@@ -29,20 +24,23 @@ namespace Matcher.Scenes.Game
             
             _uiInstaller = new GameUIInstaller(ProjectContext.WindowManager);
             _uiInstaller.Install();
+            
+            _gameView.SetUserName(_currentPayload.PlayerName);
 
-            BoardBuilder boardBuilder = new BoardBuilder(new GameBoardFactory(), _elementsContainer);
+            _session = new GameSession(_gameView, _gameBoardView, _currentPayload.Config, ProjectContext.WindowManager);
+            _session.OnSessionEnd += OnSessionEnd;
 
-            MatchEngine matchEngine = new MatchEngine(_currentPayload.Config.PairsCount);
-            CountdownTimer timer = new CountdownTimer();
-
-            _session = new GameSession(matchEngine, timer, boardBuilder, _gameView, _gameBoardView, _currentPayload.Config, ProjectContext.WindowManager);
-
-            _gameView.OnRestartClicked += () => _ = ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Game);
-            _gameView.OnHomeClicked += () => _ = ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Main);
+            _gameView.OnRestartClicked += () => _session.Restart();
+            _gameView.OnHomeClicked += GoToLobby;
 
             _session.Start();
 
             return Task.CompletedTask;
+        }
+
+        private void OnSessionEnd()
+        {
+            GoToLobby();
         }
 
         private void Update()
@@ -50,9 +48,15 @@ namespace Matcher.Scenes.Game
             _session?.Tick(Time.deltaTime);
         }
 
+        private void GoToLobby()
+        {
+            ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Main);
+        }
+
         public override void Dispose()
         {
             base.Dispose();
+            _session.OnSessionEnd += OnSessionEnd;
             _session?.Dispose();
             _uiInstaller?.Dispose();
             

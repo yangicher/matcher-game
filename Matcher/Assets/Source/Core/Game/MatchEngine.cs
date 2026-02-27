@@ -29,6 +29,18 @@ namespace Matcher.Core.Game
             _isInputLocked = false;
         }
 
+        public void Restart()
+        {
+            _moves = 0;
+            _pairsMatched = 0;
+            _isInputLocked = false;
+            
+            _firstElement = null;
+            _secondElement = null;
+            
+            OnMovesUpdated?.Invoke(_moves);
+        }
+
         public async void ProcessElementClick(IGameElement clickedElement)
         {
             if (_isInputLocked || clickedElement.CurrentState != GameElementState.Hidden)

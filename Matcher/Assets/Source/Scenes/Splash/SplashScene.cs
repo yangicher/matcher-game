@@ -8,7 +8,7 @@ namespace Matcher.Scenes.Splash
     {
         private async void Start()
         {
-            await Task.Delay(3000);
+            await Task.Delay(1000);
             await LoadAsync();
         }
         public override async Task LoadAsync(object payload = null)
