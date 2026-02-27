@@ -47,7 +47,7 @@ namespace Matcher.Core.Game
         
         public void SetUserName(string userName)
         {
-            _movesText.text = userName;
+            _userNameText.text = userName;
         }
     }
 }

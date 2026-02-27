@@ -4,6 +4,7 @@ using Matcher.Core.Game.Board;
 using Matcher.Core.Installer;
 using Matcher.Core.Project;
 using Matcher.Core.Scenes;
+using Matcher.Game.Data;
 using Matcher.Game.Installers;
 using UnityEngine;
 
@@ -25,20 +26,21 @@ namespace Matcher.Scenes.Game
             _uiInstaller = new GameUIInstaller(ProjectContext.WindowManager);
             _uiInstaller.Install();
             
-            _gameView.SetUserName(_currentPayload.PlayerName);
-
-            _session = new GameSession(_gameView, _gameBoardView, _currentPayload.Config, ProjectContext.WindowManager);
+            _session = new GameSession(_currentPayload.PlayerName, _gameView, _gameBoardView, _currentPayload.Config, ProjectContext.WindowManager);
+            _session.OnQuitGame += OnQuitGame;
             _session.OnSessionEnd += OnSessionEnd;
-
-            _gameView.OnRestartClicked += () => _session.Restart();
-            _gameView.OnHomeClicked += GoToLobby;
 
             _session.Start();
 
             return Task.CompletedTask;
         }
 
-        private void OnSessionEnd()
+        private void OnSessionEnd(SessionResult result)
+        {
+            ProjectContext.SessionService.SaveGameResultAsync(result);
+        }
+
+        private void OnQuitGame()
         {
             GoToLobby();
         }
@@ -56,7 +58,8 @@ namespace Matcher.Scenes.Game
         public override void Dispose()
         {
             base.Dispose();
-            _session.OnSessionEnd += OnSessionEnd;
+            _session.OnQuitGame -= OnQuitGame;
+            _session.OnSessionEnd -= OnSessionEnd;
             _session?.Dispose();
             _uiInstaller?.Dispose();
             

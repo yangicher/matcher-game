@@ -3,6 +3,7 @@ using Matcher.Core.Game.Board;
 using Matcher.Core.Game.Factory;
 using Matcher.Core.Game.UI;
 using Matcher.Core.UI;
+using Matcher.Game.Data;
 using Matcher.Game.Gameplay.UI.GameOver;
 using Matcher.Game.Gameplay.UI.Win;
 using Matcher.Game.Settings;
@@ -12,6 +13,7 @@ namespace Matcher.Core.Game
 {
     public class GameSession : IDisposable
     {
+        private readonly string _playerName;
         private readonly GameView _gameView;
         private readonly GameBoardView _gameBoardView;
         private readonly DifficultyConfig _config;
@@ -23,14 +25,17 @@ namespace Matcher.Core.Game
 
         private int _currentMoves;
         
-        public Action OnSessionEnd;
+        public Action OnQuitGame;
+        public Action<SessionResult> OnSessionEnd;
 
         public GameSession(
+            string playerName,
             GameView gameView, 
             GameBoardView gameBoardView, 
             DifficultyConfig config,
             WindowManager windowManager)
         {
+            _playerName = playerName;
             _gameView = gameView;
             _gameBoardView = gameBoardView;
             _config = config;
@@ -40,6 +45,10 @@ namespace Matcher.Core.Game
         public void Start()
         {
             _gameView.Initialize();
+            _gameView.SetUserName(_playerName);
+            _gameView.OnRestartClicked += () => Restart();
+            _gameView.OnHomeClicked += OnQuitGame;
+
             CreateMatchEngine();
             CreateGameBoard();
             CreateTimer();
@@ -75,7 +84,7 @@ namespace Matcher.Core.Game
             _timer.Tick(deltaTime);
         }
 
-        public void Restart(bool isReplay = false)
+        private void Restart(bool isReplay = false)
         {
             _currentMoves = 0;
             _gameView.UpdateMoves(_currentMoves);
@@ -103,14 +112,16 @@ namespace Matcher.Core.Game
         private void HandleWin()
         {
             _timer.Stop();
+            var score = CalculateScore();
+            OnSessionEnd?.Invoke(new SessionResult(_playerName, score, _currentMoves, _config.PairsCount, System.DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
             
             _windowManager.Open(new WinGameWindowController(new WinGameWindowModel()
             {
-                Score = CalculateScore(), 
+                Score = score, 
                 Moves = _currentMoves, 
                 CompletionTime = Mathf.RoundToInt(_timer.TimeRemaining),
                 OnRestartRequest = Restart,
-                OnQuitGameRequest = OnSessionEnd
+                OnQuitGameRequest = OnQuitGame
             }));
         }
 
@@ -120,7 +131,7 @@ namespace Matcher.Core.Game
             {
                 Moves = _currentMoves,
                 OnRestartRequest = Restart,
-                OnQuitGameRequest = OnSessionEnd
+                OnQuitGameRequest = OnQuitGame
             }));
         }
 
@@ -131,6 +142,8 @@ namespace Matcher.Core.Game
 
         public void Dispose()
         {
+            _gameView.OnRestartClicked = null;
+            _gameView.OnHomeClicked -= OnQuitGame;
             _matchEngine.OnMovesUpdated -= HandleMovesUpdated;
             _matchEngine.OnAllPairsMatched -= HandleWin;
             _timer.OnTimeUpdated -= _gameView.UpdateTime;

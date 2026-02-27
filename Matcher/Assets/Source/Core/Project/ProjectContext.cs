@@ -1,5 +1,6 @@
 using Matcher.Core.Scenes.Transition;
 using Matcher.Core.UI;
+using Matcher.Game.Services.Session;
 using UnityEngine;
 
 namespace Matcher.Core.Project
@@ -7,6 +8,7 @@ namespace Matcher.Core.Project
     public class ProjectContext : MonoBehaviour
     {
         public static WindowManager WindowManager { get; private set; }
+        public static ISessionService SessionService { get; private set; }
         public static TransitionController TransitionController { get; private set; }
 
         [SerializeField] private RectTransform _windowsLayer;
@@ -23,6 +25,11 @@ namespace Matcher.Core.Project
             
             InitializeWindows();
             InitializeTransitions();
+        }
+
+        public static void RegisterDataService(ISessionService sessionService)
+        {
+            SessionService = sessionService;
         }
         
         private void InitializeWindows()

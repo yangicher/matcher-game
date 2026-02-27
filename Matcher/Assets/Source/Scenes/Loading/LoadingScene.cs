@@ -1,20 +1,45 @@
 using System.Threading.Tasks;
 using Matcher.Core.Project;
 using Matcher.Core.Scenes;
+using Matcher.Game.Services.Database;
+using Matcher.Game.Services.Firebase;
+using Matcher.Game.Services.Session;
 
 namespace Matcher.Scenes.Loading
 {
     public class LoadingScene : BaseScene
     {
-        public override async Task LoadAsync(object payload = null)
+        public override Task LoadAsync(object payload = null)
         {
-            await Task.Delay(2000);
-            await ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Main);
+            return Task.CompletedTask;
         }
 
-        public override void Dispose()
+        protected override async void Start()
         {
-            base.Dispose();
+            base.Start();
+            await InitializeServicesAsync();
+        }
+
+        private async Task InitializeServicesAsync()
+        {
+            await InitializeBackendAsync();
+            await ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Main);
+        }
+        
+        private async Task InitializeBackendAsync()
+        {
+            var dependencyStatus = await Firebase.FirebaseApp.CheckAndFixDependenciesAsync();
+            if (dependencyStatus == Firebase.DependencyStatus.Available)
+            {
+                IDatabaseService firestoreDb = new FirestoreService();
+                ISessionService sessionRepo = new MatcherSessionService(firestoreDb);
+        
+                ProjectContext.RegisterDataService(sessionRepo);
+            }
+            else
+            {
+                UnityEngine.Debug.LogError($"InitializeBackendAsync {dependencyStatus}");
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Matcher.Game.Installers
 
         public void Install()
         {
-            _windowManager.RegisterWindow<LeaderboardWindowController>("UI/Windows/LeaderboardWindow");
+            _windowManager.RegisterWindow<LeaderboardWindowController>("Prefabs/UI/Windows/LeaderboardWindow");
         }
 
         public void Dispose()

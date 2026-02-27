@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Matcher.Core.Game;
 using Matcher.Core.Project;
 using Matcher.Core.Scenes;
+using Matcher.Game.Installers;
 using Matcher.Game.Settings;
 using Matcher.Scenes.Main.Lobby;
 
@@ -12,8 +13,13 @@ namespace Matcher.Scenes.Main
     {
         [SerializeField] private LobbyView _lobbyView;
 
+        private LobbyUIInstaller _lobbyUIInstaller;
+        
         public override Task LoadAsync(object payload = null)
         {
+            _lobbyUIInstaller = new LobbyUIInstaller(ProjectContext.WindowManager);
+            _lobbyUIInstaller.Install();
+            
             _lobbyView.OnPlayEasyClicked += StartEasyGame;
             _lobbyView.OnPlayHardClicked += StartHardGame;
             _lobbyView.OnLeaderboardClicked += OpenLeaderboard;
@@ -56,6 +62,7 @@ namespace Matcher.Scenes.Main
         public override void Dispose()
         {
             base.Dispose();
+            _lobbyUIInstaller?.Dispose();
             if (_lobbyView != null)
             {
                 _lobbyView.Dispose();

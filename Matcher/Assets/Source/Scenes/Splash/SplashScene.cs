@@ -6,13 +6,16 @@ namespace Matcher.Scenes.Splash
 {
     public class SplashScene : BaseScene
     {
-        private async void Start()
+        public override Task LoadAsync(object payload = null)
         {
-            await Task.Delay(1000);
-            await LoadAsync();
+            return Task.CompletedTask;
         }
-        public override async Task LoadAsync(object payload = null)
+
+        protected override async void Start()
         {
+            base.Start();
+            await Task.Delay(1000);
+            
             await ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Loading);
         }
     }
