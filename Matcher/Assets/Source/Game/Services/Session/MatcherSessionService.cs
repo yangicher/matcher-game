@@ -32,7 +32,7 @@ namespace Matcher.Game.Services.Session
         
         public async Task<List<SessionResult>> GetLeaderboardAsync(int pairsCount, int limit = 10)
         {
-            var rawData = await _dbService.GetTopDocumentsAsync(LEADERBOARD_COLLECTION, "pairsCount", pairsCount, "score", limit);
+            var rawData = await _dbService.GetTopDocumentsAsync(LEADERBOARD_COLLECTION, "difficulty", pairsCount, "score", limit);
     
             var results = new List<SessionResult>();
             foreach(var dict in rawData)
@@ -40,7 +40,7 @@ namespace Matcher.Game.Services.Session
                 string name = dict.ContainsKey("playerName") ? dict["playerName"].ToString() : "Unknown";
                 int score = dict.ContainsKey("score") ? System.Convert.ToInt32(dict["score"]) : 0;
                 int moves = dict.ContainsKey("moves") ? System.Convert.ToInt32(dict["moves"]) : 0;
-                int pairs = dict.ContainsKey("pairsCount") ? System.Convert.ToInt32(dict["pairsCount"]) : pairsCount;
+                int pairs = dict.ContainsKey("difficulty") ? System.Convert.ToInt32(dict["difficulty"]) : pairsCount;
                 long timestamp = dict.ContainsKey("timestamp") ? System.Convert.ToInt64(dict["timestamp"]) : 0;
 
                 results.Add(new SessionResult(name, score, moves, pairs, timestamp));

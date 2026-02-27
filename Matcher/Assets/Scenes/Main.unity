@@ -127,9 +127,61 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2069863309}
     m_Modifications:
+    - target: {fileID: 415116920049844341, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_text
+      value: Enter name...
+      objectReference: {fileID: 0}
+    - target: {fileID: 415116920049844341, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 415116920049844341, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 415116920049844341, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 415116920049844341, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 415116920049844341, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4031443976785223783, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
       propertyPath: m_Name
       value: LobbyView
+      objectReference: {fileID: 0}
+    - target: {fileID: 4236188511522234868, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4236188511522234868, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_GlobalPointSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 7294192952766600463, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_text
+      value: "\u200B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7294192952766600463, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 7294192952766600463, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 7294192952766600463, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 7294192952766600463, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7421093821594916008, guid: 6f4426fe035104206863a900cc4d7d7e, type: 3}
       propertyPath: m_Pivot.x

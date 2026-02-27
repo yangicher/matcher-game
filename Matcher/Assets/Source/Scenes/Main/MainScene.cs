@@ -4,6 +4,7 @@ using Matcher.Core.Game;
 using Matcher.Core.Project;
 using Matcher.Core.Scenes;
 using Matcher.Game.Installers;
+using Matcher.Game.Lobby.UI;
 using Matcher.Game.Settings;
 using Matcher.Scenes.Main.Lobby;
 
@@ -57,6 +58,7 @@ namespace Matcher.Scenes.Main
 
         private void OpenLeaderboard()
         {
+            ProjectContext.WindowManager.Open(new LeaderboardWindowController(new LeaderboardWindowModel()));
         }
 
         public override void Dispose()

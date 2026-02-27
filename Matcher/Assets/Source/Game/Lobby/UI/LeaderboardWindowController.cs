@@ -6,7 +6,7 @@ namespace Matcher.Game.Lobby.UI
 {
     public class LeaderboardWindowController : BaseWindowController<LeaderboardWindowModel, LeaderboardWindowView>
     {
-        private int _currentTabPairsCount = 8;
+        private int _difficulty = 4;
 
         public LeaderboardWindowController(LeaderboardWindowModel model) : base(model)
         {
@@ -26,17 +26,17 @@ namespace Matcher.Game.Lobby.UI
 
         protected override void OnOpened()
         {
-            LoadLeaderboardForTab(_currentTabPairsCount);
+            LoadLeaderboardForTab(_difficulty);
         }
 
         private async void LoadLeaderboardForTab(int pairsCount)
         {
-            _currentTabPairsCount = pairsCount;
+            _difficulty = pairsCount;
             
             WindowView.ShowLoading(true);
             WindowView.PopulateList(new System.Collections.Generic.List<SessionResult>());
 
-            var results = await ProjectContext.SessionService.GetLeaderboardAsync(_currentTabPairsCount, 10);
+            var results = await ProjectContext.SessionService.GetLeaderboardAsync(_difficulty, 10);
 
             WindowView.ShowLoading(false);
             WindowView.PopulateList(results);

@@ -12,12 +12,12 @@ namespace Matcher.Game.Lobby.UI
     {
         [SerializeField] private ToggleGroup _toggleGroup;
         
-        [SerializeField] private Toggle _toggle;
-        [SerializeField] private Toggle _toggle8Pairs;
+        [SerializeField] private Toggle _toggleEasy;
+        [SerializeField] private Toggle _toggleHard;
         
         [SerializeField] private Transform _itemsContainer;
         [SerializeField] private LeaderboardItemView _itemPrefab;
-        [SerializeField] private GameObject _loadingSpinner;
+        [SerializeField] private GameObject _loadingGameObject;
 
         [SerializeField] private Button _closeButton;
 
@@ -28,12 +28,31 @@ namespace Matcher.Game.Lobby.UI
 
         private void Awake()
         {
+            _toggleEasy.isOn = true;
+            _toggleHard.isOn = false;
+            _toggleEasy.group = _toggleGroup;
+            _toggleHard.group = _toggleGroup;
+            
+            _toggleEasy.onValueChanged.AddListener((value) =>
+            {
+                if (value)
+                {
+                    OnTabClicked?.Invoke(4);
+                }
+            });
+            _toggleHard.onValueChanged.AddListener((value) =>
+            {
+                if (value)
+                {
+                    OnTabClicked?.Invoke(8);
+                }
+            });
             _closeButton.onClick.AddListener(() => OnCloseClicked?.Invoke());
         }
 
         public void ShowLoading(bool isLoading)
         {
-            _loadingSpinner.SetActive(isLoading);
+            _loadingGameObject.SetActive(isLoading);
         }
 
         public void PopulateList(List<SessionResult> results)
@@ -46,12 +65,21 @@ namespace Matcher.Game.Lobby.UI
                 var result = results[i];
                 var itemView = Instantiate(_itemPrefab, _itemsContainer);
                 
-                itemView.Setup(i + 1, result.PlayerName, result.Score, result.Moves, TimeSpan.FromTicks(result.TimestampUnix).ToString());
+                itemView.Setup(i + 1, result.PlayerName, result.Score, result.Moves, DateTimeOffset.FromUnixTimeSeconds(result.TimestampUnix).LocalDateTime.ToString("dd.MM.yy HH:mm"));
                 _activeItems.Add(itemView);
             }
         }
 
-        public override Task PlayShowAnimationAsync() { gameObject.SetActive(true); return Task.CompletedTask; }
-        public override Task PlayHideAnimationAsync() { gameObject.SetActive(false); return Task.CompletedTask; }
+        public override Task PlayShowAnimationAsync()
+        {
+            gameObject.SetActive(true); 
+            return Task.CompletedTask;
+        }
+
+        public override Task PlayHideAnimationAsync()
+        {
+            gameObject.SetActive(false); 
+            return Task.CompletedTask;
+        }
     }
 }
