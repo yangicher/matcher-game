@@ -329,6 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Matcher.Scenes.Main.MainScene
   _lobbyView: {fileID: 317027851}
+  _settings: {fileID: 11400000, guid: ebea36a5c3f9c4a5f8a2ae664f4970b2, type: 2}
 --- !u!1 &859014137
 GameObject:
   m_ObjectHideFlags: 0

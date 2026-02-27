@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Matcher.Core.UI;
 using Matcher.Game.Data;
+using Matcher.Game.Settings;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +23,7 @@ namespace Matcher.Game.Lobby.UI
 
         [SerializeField] private Button _closeButton;
 
-        public event Action<int> OnTabClicked;
+        public event Action<DifficultyLevel> OnTabClicked;
         public event Action OnCloseClicked;
         public event Action<LeaderboardItemView, int> OnItemRequested;
         
@@ -37,14 +38,14 @@ namespace Matcher.Game.Lobby.UI
             {
                 if (value)
                 {
-                    OnTabClicked?.Invoke(4);
+                    OnTabClicked?.Invoke(DifficultyLevel.Easy);
                 }
             });
             _toggleHard.onValueChanged.AddListener((value) =>
             {
                 if (value)
                 {
-                    OnTabClicked?.Invoke(8);
+                    OnTabClicked?.Invoke(DifficultyLevel.Hard);
                 }
             });
             _closeButton.onClick.AddListener(() => OnCloseClicked?.Invoke());

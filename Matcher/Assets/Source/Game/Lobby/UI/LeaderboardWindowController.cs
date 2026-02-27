@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Matcher.Core.Project;
 using Matcher.Core.UI;
 using Matcher.Game.Data;
+using Matcher.Game.Settings;
 
 namespace Matcher.Game.Lobby.UI
 {
     public class LeaderboardWindowController : BaseWindowController<LeaderboardWindowModel, LeaderboardWindowView>
     {
-        private int _difficulty = 4;
+        private DifficultyLevel _difficulty;
 
         private List<SessionResult> _currentData = new List<SessionResult>();
         public LeaderboardWindowController(LeaderboardWindowModel model) : base(model)
@@ -54,14 +55,17 @@ namespace Matcher.Game.Lobby.UI
             );
         }
 
-        private async void LoadLeaderboardForTab(int pairsCount)
+        private async void LoadLeaderboardForTab(DifficultyLevel level)
         {
-            _difficulty = pairsCount;
+            _difficulty = level;
             
             WindowView.ShowLoading(true);
             WindowView.SetDataCount(0);
 
-            _currentData = await ProjectContext.SessionService.GetLeaderboardAsync(_difficulty, 10);
+            int pairsCount = _difficulty == DifficultyLevel.Easy 
+                ? Model.Settings.EasyConfig.PairsCount 
+                : Model.Settings.HardConfig.PairsCount;
+            _currentData = await ProjectContext.SessionService.GetLeaderboardAsync(pairsCount, 10);
 
             WindowView.ShowLoading(false);
             WindowView.SetDataCount(_currentData.Count);

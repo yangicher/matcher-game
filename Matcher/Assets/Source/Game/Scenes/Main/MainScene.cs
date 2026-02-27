@@ -13,6 +13,7 @@ namespace Matcher.Scenes.Main
     public class MainScene : BaseScene
     {
         [SerializeField] private LobbyView _lobbyView;
+        [SerializeField] private GameSettings _settings;
 
         private LobbyUIInstaller _lobbyUIInstaller;
         
@@ -45,20 +46,13 @@ namespace Matcher.Scenes.Main
             _lobbyView.SetInteractable(false);
 
             playerName = string.IsNullOrWhiteSpace(playerName) ? "Guest" : playerName;
-
-            if (difficulty == DifficultyLevel.Easy)
-            {
-                ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Game, new GamePayload(playerName, new DifficultyConfig { PairsCount = 4, GridColumns = 4, TimeLimit = 60f }));
-            }
-            else
-            {
-                ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Game, new GamePayload(playerName, new DifficultyConfig { PairsCount = 8, GridColumns = 4, TimeLimit = 60f }));
-            }
+            _settings.CurrentDifficulty = difficulty;
+            ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Game, new GamePayload(playerName, _settings.GetCurrentConfig()));
         }
 
         private void OpenLeaderboard()
         {
-            ProjectContext.WindowManager.Open(new LeaderboardWindowController(new LeaderboardWindowModel()));
+            ProjectContext.WindowManager.Open(new LeaderboardWindowController(new LeaderboardWindowModel(_settings)));
         }
 
         public override void Dispose()
