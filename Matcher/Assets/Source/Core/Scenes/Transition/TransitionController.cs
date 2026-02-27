@@ -7,12 +7,14 @@ namespace Matcher.Core.Scenes.Transition
     public class TransitionController
     {
         private readonly TransitionView _viewPrefab;
+        private readonly Transform _transitionContainer;
         private BaseScene _currentSceneLogic;
         private TaskCompletionSource<BaseScene> _sceneReady;
 
-        public TransitionController(TransitionView viewPrefab)
+        public TransitionController(TransitionView viewPrefab, Transform transitionContainer)
         {
             _viewPrefab = viewPrefab;
+            _transitionContainer = transitionContainer;
         }
 
         public void RegisterScene(BaseScene scene)
@@ -23,8 +25,7 @@ namespace Matcher.Core.Scenes.Transition
 
         public async Task LoadSceneAsync(string sceneName, object payload = null)
         {
-            TransitionView activeView = Object.Instantiate(_viewPrefab);
-            Object.DontDestroyOnLoad(activeView.gameObject);
+            TransitionView activeView = Object.Instantiate(_viewPrefab, _transitionContainer);
 
             await activeView.FadeInAsync();
 
