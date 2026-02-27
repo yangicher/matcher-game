@@ -15,6 +15,7 @@ namespace Matcher.Game.Lobby.UI
         [SerializeField] private Toggle _toggleEasy;
         [SerializeField] private Toggle _toggleHard;
         
+        [SerializeField] private LeaderboardListView _recycledListView;
         [SerializeField] private Transform _itemsContainer;
         [SerializeField] private LeaderboardItemView _itemPrefab;
         [SerializeField] private GameObject _loadingGameObject;
@@ -23,9 +24,8 @@ namespace Matcher.Game.Lobby.UI
 
         public event Action<int> OnTabClicked;
         public event Action OnCloseClicked;
-
-        private List<LeaderboardItemView> _activeItems = new List<LeaderboardItemView>();
-
+        public event Action<LeaderboardItemView, int> OnItemRequested;
+        
         private void Awake()
         {
             _toggleEasy.isOn = true;
@@ -48,6 +48,7 @@ namespace Matcher.Game.Lobby.UI
                 }
             });
             _closeButton.onClick.AddListener(() => OnCloseClicked?.Invoke());
+            _recycledListView.OnBindItem += (itemView, index) => OnItemRequested?.Invoke(itemView, index);
         }
 
         public void ShowLoading(bool isLoading)
@@ -55,19 +56,9 @@ namespace Matcher.Game.Lobby.UI
             _loadingGameObject.SetActive(isLoading);
         }
 
-        public void PopulateList(List<SessionResult> results)
+        public void SetDataCount(int count)
         {
-            foreach (var item in _activeItems) Destroy(item.gameObject);
-            _activeItems.Clear();
-
-            for (int i = 0; i < results.Count; i++)
-            {
-                var result = results[i];
-                var itemView = Instantiate(_itemPrefab, _itemsContainer);
-                
-                itemView.Setup(i + 1, result.PlayerName, result.Score, result.Moves, DateTimeOffset.FromUnixTimeSeconds(result.TimestampUnix).LocalDateTime.ToString("dd.MM.yy HH:mm"));
-                _activeItems.Add(itemView);
-            }
+            _recycledListView.SetDataCount(count);
         }
 
         public override Task PlayShowAnimationAsync()

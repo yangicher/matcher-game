@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Firebase.Firestore;
+using Matcher.Core.Services;
 using Matcher.Game.Data;
-using Matcher.Game.Services.Database;
 
 namespace Matcher.Game.Services.Session
 {
@@ -44,6 +46,11 @@ namespace Matcher.Game.Services.Session
                 long timestamp = dict.ContainsKey("timestamp") ? System.Convert.ToInt64(dict["timestamp"]) : 0;
 
                 results.Add(new SessionResult(name, score, moves, pairs, timestamp));
+            }
+
+            for (int i = 0; i < 30; i++)
+            {
+                results.Add(new SessionResult("name" + i, i, i, pairsCount, DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
             }
     
             return results;

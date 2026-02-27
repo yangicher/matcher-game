@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Matcher.Game.Services.Database
+namespace Matcher.Core.Services
 {
     public interface IDatabaseService
     {

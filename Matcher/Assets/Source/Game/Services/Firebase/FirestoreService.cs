@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Firebase.Firestore;
-using Matcher.Game.Services.Database;
+using Matcher.Core.Services;
 
 namespace Matcher.Game.Services.Firebase
 {
