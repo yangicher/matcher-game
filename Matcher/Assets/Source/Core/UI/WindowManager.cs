@@ -1,9 +1,13 @@
 using System.Collections.Generic;
+using Matcher.Core.UI.Components;
+using UnityEngine;
 
 namespace Matcher.Core.UI
 {
     public class WindowManager
     {
+        private WindowBlackout _blackout;
+        
         private readonly WindowFactory _factory;
         private readonly WindowMapper _mapper;
         private readonly Queue<IWindowController> _windowQueue = new Queue<IWindowController>();
@@ -44,10 +48,19 @@ namespace Matcher.Core.UI
                 
                 _currentActiveWindow.InitializeView(_factory);
                 _currentActiveWindow.Open();
+
+                if (_blackout == null)
+                {
+                    _blackout = _factory.CreateBlackout();
+                }
+                
+                _blackout.transform.SetAsFirstSibling();
+                _blackout.FadeInAsync();
             }
             else
             {
                 _currentActiveWindow = null;
+                _blackout?.FadeOutAsync();
             }
         }
 
