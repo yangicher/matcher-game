@@ -16,9 +16,9 @@ MonoBehaviour:
   CurrentDifficulty: 0
   EasyConfig:
     PairsCount: 4
-    GridColumns: 2
+    GridColumns: 4
     TimeLimit: 30
   HardConfig:
     PairsCount: 8
-    GridColumns: 4
+    GridColumns: 8
     TimeLimit: 60
