@@ -47,11 +47,6 @@ namespace Matcher.Game.Services.Session
 
                 results.Add(new SessionResult(name, score, moves, pairs, timestamp));
             }
-
-            for (int i = 0; i < 30; i++)
-            {
-                results.Add(new SessionResult("name" + i, i, i, pairsCount, DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
-            }
     
             return results;
         }
