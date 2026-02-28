@@ -8,6 +8,7 @@ namespace Matcher.Core.UI
 {
     public class WindowFactory : BaseFactory
     {
+        private const string BlackoutPath = "Prefabs/UI/Blackout";
         private readonly WindowMapper _mapper;
         private readonly Transform _uiRoot;
 
@@ -19,7 +20,7 @@ namespace Matcher.Core.UI
 
         public WindowBlackout CreateBlackout()
         {
-            return CreateObject<WindowBlackout>("Prefabs/UI/Blackout", _uiRoot);
+            return CreateObject<WindowBlackout>(BlackoutPath, _uiRoot);
         }
 
         public TWindow CreateWindow<TWindow>(Type controllerType) where TWindow : Object, IBaseWindow
