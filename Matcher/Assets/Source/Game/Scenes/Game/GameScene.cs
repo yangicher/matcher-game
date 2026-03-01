@@ -15,7 +15,7 @@ namespace Matcher.Scenes.Game
         [SerializeField] private GameBoardView _gameBoardView;
         [SerializeField] private GameView _gameView;
         
-        private GameSession _session;
+        private IGameSession _session;
         private GamePayload _currentPayload;
         private IInstaller _uiInstaller;
         
@@ -25,8 +25,10 @@ namespace Matcher.Scenes.Game
             
             _uiInstaller = new GameUIInstaller(ProjectContext.WindowManager);
             _uiInstaller.Install();
-            
-            _session = new GameSession(_currentPayload.PlayerName, _gameView, _gameBoardView, _currentPayload.Config, ProjectContext.WindowManager);
+
+            _session = _currentPayload.GameSession;
+
+            _session.Init(_currentPayload.PlayerName, _gameView, _gameBoardView, _currentPayload.Config, _currentPayload.Theme, ProjectContext.WindowManager);
             _session.OnQuitGame += OnQuitGame;
             _session.OnSessionEnd += OnSessionEnd;
 

@@ -10,6 +10,13 @@ namespace Matcher.Core.Game.Board
 
         public RectTransform BoardRect => _boardRect;
 
+        public void AdjustGridLayout(int columns, Vector2 prefabSize)
+        {
+            _gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+            _gridLayout.constraintCount = columns;
+            _gridLayout.cellSize = prefabSize;
+        }
+        
         public void AdjustGridLayout(int totalElements, int columns)
         {
             _gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;

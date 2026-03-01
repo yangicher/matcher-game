@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Matcher.Core.Game.Factory
 {
-    public class GameBoardFactory : BaseFactory
+    public class GameBoardFactory : BaseFactory, IGameBoardFactory
     {
         private const string GameElementItemPath = "Prefabs/GameElement";
         
-        public BaseGameElement CreateGameElement(Transform parent)
+        public virtual IGameElement CreateGameElement(Transform parent)
         {
             var gameElement = CreateObject<BaseGameElement>(GameElementItemPath, parent);
             return gameElement;

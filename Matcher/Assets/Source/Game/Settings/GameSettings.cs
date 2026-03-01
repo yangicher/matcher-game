@@ -9,6 +9,8 @@ namespace Matcher.Game.Settings
         [Header("Current Session Data")]
         public string PlayerName = "Player";
         public DifficultyLevel CurrentDifficulty;
+        
+        public ThemeConfig CurrentTheme;
 
         [Header("Difficulty Presets")]
         public DifficultyConfig EasyConfig = new DifficultyConfig { PairsCount = 4, GridColumns = 4, TimeLimit = 30f };

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Matcher.Core.Game.Element;
 using Matcher.Core.Game.Factory;
+using Matcher.Game.Settings;
 using UnityEngine;
 using Random = System.Random;
 
@@ -10,17 +11,17 @@ namespace Matcher.Core.Game.Board
     public class BoardBuilder
     {
         private readonly Transform _boardContainer;
-        private readonly GameBoardFactory _factory;
+        private readonly IGameBoardFactory _factory;
         private readonly List<IGameElement> _activeElements = new List<IGameElement>();
         
-        private readonly string[] _availableSymbols = { 
-            "A", "B", "C", "D", "E", "F", "G", "H", 
-            "I", "J", "K", "L", "M", "N", "O", "P" 
-        };
+        private readonly ThemeConfig _themeConfig;
+        
+        public IGameElement ActiveElement => _activeElements[0];
 
-        public BoardBuilder(GameBoardFactory factory, Transform boardContainer)
+        public BoardBuilder(IGameBoardFactory factory, ThemeConfig themeConfig, Transform boardContainer)
         {
             _factory = factory;
+            _themeConfig = themeConfig;
             _boardContainer = boardContainer;
         }
 
@@ -39,16 +40,16 @@ namespace Matcher.Core.Game.Board
             for (int i = 0; i < totalElements; i++)
             {
                 int id = ids[i];
-                string symbol = _availableSymbols[id % _availableSymbols.Length];
+                var matchModel = _themeConfig.AvailableModels[id % _themeConfig.AvailableModels.Length];
 
                 if (i < _activeElements.Count)
                 {
-                    _activeElements[i].Initialize(id, symbol, onElementClicked);
+                    _activeElements[i].Initialize(id, matchModel, onElementClicked);
                 }
                 else
                 {
                     var element = _factory.CreateGameElement(_boardContainer);
-                    element.Initialize(id, symbol, onElementClicked);
+                    element.Initialize(id, matchModel, onElementClicked);
                     _activeElements.Add(element);
                 }
             }

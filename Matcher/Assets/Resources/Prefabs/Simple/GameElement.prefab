@@ -307,6 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3c1c4c42ab4eb2822de79d15377be9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Matcher.Core.Game.Element.BaseGameElement
+  _rectTransform: {fileID: 8872665705940331223}
   _button: {fileID: 7762571917678747078}
   _hiddenVisuals: {fileID: 7412247939602438745}
   _revealedVisuals: {fileID: 7412247939602438745}

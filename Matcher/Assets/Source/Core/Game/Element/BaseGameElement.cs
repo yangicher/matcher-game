@@ -1,4 +1,5 @@
 using System;
+using Matcher.Game.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ namespace Matcher.Core.Game.Element
 {
     public class BaseGameElement : MonoBehaviour, IGameElement
     {
+        [SerializeField] protected RectTransform _rectTransform;
         [SerializeField] protected Button _button;
         [SerializeField] protected GameObject _hiddenVisuals;
         [SerializeField] protected GameObject _revealedVisuals;
@@ -14,6 +16,8 @@ namespace Matcher.Core.Game.Element
         [SerializeField] protected TMP_Text _symbolText;
 
         public int Id { get; private set; }
+
+        public RectTransform RectTransform => _rectTransform;
         public GameElementState CurrentState { get; private set; }
 
         private Action<BaseGameElement> _onElementClicked;
@@ -23,14 +27,14 @@ namespace Matcher.Core.Game.Element
             _button.onClick.AddListener(HandleClick);
         }
 
-        public virtual void Initialize(int id, string symbol, Action<IGameElement> onClickCallback)
+        public virtual void Initialize(int id, MatchModel model, Action<IGameElement> onClickCallback)
         {
             Id = id;
             _onElementClicked = onClickCallback;
 
             if (_symbolText != null)
             {
-                _symbolText.text = symbol;
+                _symbolText.text = model.Symbol;
             }
 
             SetState(GameElementState.Hidden);

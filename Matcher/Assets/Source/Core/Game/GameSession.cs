@@ -11,13 +11,14 @@ using UnityEngine;
 
 namespace Matcher.Core.Game
 {
-    public class GameSession : IDisposable
+    public class GameSession : IGameSession
     {
-        private readonly string _playerName;
-        private readonly GameView _gameView;
-        private readonly GameBoardView _gameBoardView;
-        private readonly DifficultyConfig _config;
-        private readonly WindowManager _windowManager;
+        private string _playerName;
+        private GameView _gameView;
+        private GameBoardView _gameBoardView;
+        private DifficultyConfig _config;
+        private ThemeConfig _themeConfig;
+        private WindowManager _windowManager;
         
         private MatchEngine _matchEngine;
         private CountdownTimer _timer;
@@ -25,20 +26,22 @@ namespace Matcher.Core.Game
 
         private int _currentMoves;
         
-        public Action OnQuitGame;
-        public Action<SessionResult> OnSessionEnd;
+        public Action OnQuitGame { get; set; }
+        public Action<SessionResult> OnSessionEnd { get; set; }
 
-        public GameSession(
+        public void Init(
             string playerName,
             GameView gameView, 
             GameBoardView gameBoardView, 
             DifficultyConfig config,
+            ThemeConfig themeConfig,
             WindowManager windowManager)
         {
             _playerName = playerName;
             _gameView = gameView;
             _gameBoardView = gameBoardView;
             _config = config;
+            _themeConfig = themeConfig;
             _windowManager = windowManager;
         }
 
@@ -54,20 +57,24 @@ namespace Matcher.Core.Game
             CreateTimer();
         }
 
-        private void CreateGameBoard()
+        public void CreateGameBoard()
         {
-            _boardBuilder = new BoardBuilder(new GameBoardFactory(), _gameBoardView.BoardRect);
+            _boardBuilder = new BoardBuilder(GetGameBoardFactory(), _themeConfig, _gameBoardView.BoardRect);
             _boardBuilder.BuildBoard(_config.PairsCount, _matchEngine.ProcessElementClick);
             
-            int totalCards = _config.PairsCount * 2;
-            _gameBoardView.AdjustGridLayout(totalCards, _config.GridColumns);
+            _gameBoardView.AdjustGridLayout(_config.GridColumns, _boardBuilder.ActiveElement.RectTransform.rect.size);
         }
 
-        private void CreateMatchEngine()
+        public void CreateMatchEngine()
         {
             _matchEngine = new MatchEngine(_config.PairsCount);
             _matchEngine.OnMovesUpdated += HandleMovesUpdated;
             _matchEngine.OnAllPairsMatched += HandleWin;
+        }
+
+        protected virtual IGameBoardFactory GetGameBoardFactory()
+        {
+            return new GameBoardFactory();
         }
 
         private void CreateTimer()
@@ -135,7 +142,7 @@ namespace Matcher.Core.Game
             }));
         }
 
-        private int CalculateScore()
+        public virtual int CalculateScore()
         {
             return Math.Max(0, (_config.PairsCount * 100) + (int)(_timer.TimeRemaining * 10) - (_currentMoves * 5));
         }
