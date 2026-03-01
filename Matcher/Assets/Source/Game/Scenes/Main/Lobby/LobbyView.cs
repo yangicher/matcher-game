@@ -23,6 +23,11 @@ namespace Matcher.Scenes.Main.Lobby
             _leaderboardButton.onClick.AddListener(() => OnLeaderboardClicked?.Invoke());
         }
 
+        public void SetPlayerName(string name)
+        {
+            _nameInputField.text = name;
+        }
+
         public void SetInteractable(bool state)
         {
             _easyButton.interactable = state;

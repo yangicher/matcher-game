@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 
 namespace Matcher.Game.Settings
 {
@@ -10,11 +9,9 @@ namespace Matcher.Game.Settings
         public string PlayerName = "Player";
         public DifficultyLevel CurrentDifficulty;
         
-        public ThemeConfig CurrentTheme;
-
         [Header("Difficulty Presets")]
         public DifficultyConfig EasyConfig = new DifficultyConfig { PairsCount = 4, GridColumns = 4, TimeLimit = 30f };
-        public DifficultyConfig HardConfig = new DifficultyConfig { PairsCount = 8, GridColumns = 8, TimeLimit = 60f };
+        public DifficultyConfig HardConfig = new DifficultyConfig { PairsCount = 8, GridColumns = 4, TimeLimit = 60f };
 
         public DifficultyConfig GetCurrentConfig() 
         {

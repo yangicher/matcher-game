@@ -1124,6 +1124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Matcher.Scenes.Game.GameScene
   _gameBoardView: {fileID: 662231062}
   _gameView: {fileID: 316509046}
+  _themeConfig: {fileID: 11400000, guid: 45d91239fb287492ca790038ed1a0e92, type: 2}
 --- !u!4 &1456318546
 Transform:
   m_ObjectHideFlags: 0

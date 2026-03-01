@@ -6,5 +6,6 @@ namespace Matcher.Core.Scenes
         public const string Loading = "Loading";
         public const string Main = "Main";
         public const string Game = "Game";
+        public const string CardsGame = "CardsGame";
     }
 }

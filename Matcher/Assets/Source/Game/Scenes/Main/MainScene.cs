@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Threading.Tasks;
-using Matcher.Cards;
 using Matcher.Core.Game;
 using Matcher.Core.Project;
 using Matcher.Core.Scenes;
@@ -48,7 +47,7 @@ namespace Matcher.Scenes.Main
 
             playerName = string.IsNullOrWhiteSpace(playerName) ? "Guest" : playerName;
             _settings.CurrentDifficulty = difficulty;
-            ProjectContext.TransitionController.LoadSceneAsync(SceneNames.Game, new GamePayload(playerName, new CardsGameSession(), _settings.GetCurrentConfig(), _settings.CurrentTheme));
+            ProjectContext.TransitionController.LoadSceneAsync(SceneNames.CardsGame, new GamePayload(playerName, _settings.GetCurrentConfig()));
         }
 
         private void OpenLeaderboard()

@@ -6,6 +6,7 @@ using Matcher.Core.Project;
 using Matcher.Core.Scenes;
 using Matcher.Game.Data;
 using Matcher.Game.Installers;
+using Matcher.Game.Settings;
 using UnityEngine;
 
 namespace Matcher.Scenes.Game
@@ -14,6 +15,9 @@ namespace Matcher.Scenes.Game
     {
         [SerializeField] private GameBoardView _gameBoardView;
         [SerializeField] private GameView _gameView;
+        [SerializeField] private ThemeConfig _themeConfig;
+
+        protected ThemeConfig ThemeConfig => _themeConfig;
         
         private IGameSession _session;
         private GamePayload _currentPayload;
@@ -25,16 +29,21 @@ namespace Matcher.Scenes.Game
             
             _uiInstaller = new GameUIInstaller(ProjectContext.WindowManager);
             _uiInstaller.Install();
-
-            _session = _currentPayload.GameSession;
-
-            _session.Init(_currentPayload.PlayerName, _gameView, _gameBoardView, _currentPayload.Config, _currentPayload.Theme, ProjectContext.WindowManager);
+            
+            _session = CreateSession();
+            
+            _session.Init(_currentPayload.PlayerName, _gameView, _gameBoardView, _currentPayload.Config, ThemeConfig, ProjectContext.WindowManager);
             _session.OnQuitGame += OnQuitGame;
             _session.OnSessionEnd += OnSessionEnd;
 
             _session.Start();
 
             return Task.CompletedTask;
+        }
+
+        protected virtual IGameSession CreateSession()
+        {
+            return new GameSession();
         }
 
         private void OnSessionEnd(SessionResult result)

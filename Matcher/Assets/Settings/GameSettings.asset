@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: Assembly-CSharp::Matcher.Game.Settings.GameSettings
   PlayerName: Unknown
-  CurrentDifficulty: 0
-  CurrentTheme: {fileID: 11400000, guid: 45d91239fb287492ca790038ed1a0e92, type: 2}
+  CurrentDifficulty: 1
+  CurrentTheme: {fileID: 11400000, guid: 56bc94ac75671435aa3bb1f1e8db3e4c, type: 2}
   EasyConfig:
     PairsCount: 4
     GridColumns: 4
     TimeLimit: 30
   HardConfig:
     PairsCount: 8
-    GridColumns: 8
+    GridColumns: 4
     TimeLimit: 60
